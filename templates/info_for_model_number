@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Information by serial number{% endblock %}
+{% block heading %}Information by serial number{% endblock %}
+{% block head %}
+<style>
+  body {
+  background-image: url("AVUELOGO");
+  }
+</style>  
+{% endblock %}
+
+{% block content %}
+<br><br>
+<center>
+<div class="well spaced" style="width:40%;">
+<div>
+  
+    <h2>Information for model number</h2><br><br>
+
+    <h3>Number of items received: {{ count_items_received }}</h3><br>
+    <ul>
+      {% for item in items_received %}
+        <li>{{ item.serial_number }}, {{ item.shipped_in }}</li>
+    </ul>
+
+    <h3>Number of items shipped: {{ count_items_shipped }}</h3><br>
+    <ul>
+      {% for item in items_shipped %}
+        <li>{{ item.serial_number }}, {{ item.shipped_out }}</li>
+    </ul>
+
+</div>
+</div>
+</center>
+
+{% endblock %}

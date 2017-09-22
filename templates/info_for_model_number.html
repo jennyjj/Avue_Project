@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Information for model number{% endblock %}
+{% block heading %}Information for model number{% endblock %}
+
+{% block head %}
+<style>
+  body {
+   background-image: url("AVUELOGO");
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<br><br>
+<center>
+<div class="well spaced" style="width:40%;">
+<div id="wrapper">
+
+    <h2>Details about model {{ model_code }}</h2>
+
+    <h3>Description: {{ model.description }}</h3>
+
+    <h3>Number of items shipped in: {{ count_items_received }}</h3>
+      {% for item in items_received %}
+        <li>Serial number: {{ item.serial_number }}, Shipped in on: {{ item.shipped_in }}</li>
+      {% endfor %}
+
+    <h3>Number of items shipped out: {{ count_items_shipped }}</h3>
+      {% for item in items_shipped %}
+        <li>Serial number: {{ item.serial_number }}, Shipped out on: {{ item.shipped_out }}</li>
+      {% endfor %}
+
+</div>
+</div>
+</center>
+
+{% endblock %}

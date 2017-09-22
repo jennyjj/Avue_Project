@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Form for model information{% endblock %}
+{% block heading %}Form for model information{% endblock %}
+{% block head %}
+<style>
+  body {
+  background-image: url("AVUELOGO");
+  }
+</style>  
+{% endblock %}
+
+{% block content %}
+<br><br>
+<center>
+<div class="well spaced" style="width:40%;">
+<div>
+    <h2>Enter model information</h2>
+    <form action="/info_for_model_number" method="POST">
+
+      <div class="form-group">
+            <label>Model number:
+                <input type="model_code" name="model_code" required class="form-control">
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>Starting date:
+                <input type="start_date" name="start_date" required class="form-control">
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>Ending date:
+                <input type="end_date" name="end_date" required class="form-control">
+            </label>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Get information" class="btn btn-danger">
+        </div>
+
+    </form>
+</div>
+</div>
+</center>
+
+{% endblock %}

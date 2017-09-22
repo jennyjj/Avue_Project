@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Home page{% endblock %}
+{% block heading %}AVUE Warehouse{% endblock %}
+{% block head %}
+<style>
+  body {
+  background-image: url("AVUELOGO");
+  }
+</style>  
+{% endblock %}
+
+{% block content %}
+
+<!-- Single button -->
+<br><br>
+<center>
+<div class="well spaced" style="width:40%;">
+<div>
+    <h2>Shipping in</h2>
+    <form action="/ship_in" method="POST">
+
+      <div class="form-group">
+            <label>Model number:
+                <input type="model_code" name="model_code" required class="form-control">
+            </label>
+        </div>
+
+         <div class="form-group">
+             <label>Description:
+                <input type="description" name="description" required class="form-control">
+            </label>
+        </div>
+
+        <div class="form-group">
+             <label>Manufacturer:
+                <input type="manufacturer" name="manufacturer" required class="form-control">
+            </label>
+        </div>
+
+         <div class="form-group">
+             <label>Serial number:
+                <input type="serial_number" name="serial_number" required class="form-control">
+            </label>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Finish shipping in" class="btn btn-danger">
+        </div>
+
+    </form>
+</div>
+</div>
+</center>
+
+{% endblock %}

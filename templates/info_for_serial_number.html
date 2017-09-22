@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Information by serial number{% endblock %}
+{% block heading %}Information by serial number{% endblock %}
+{% block head %}
+<style>
+  body {
+  background-image: url("AVUELOGO");
+  }
+</style>  
+{% endblock %}
+
+{% block content %}
+<br><br>
+<center>
+<div class="well spaced" style="width:40%;">
+<div>
+    <h2>Details about item {{ item.serial_number }}</h2>
+
+    <h3>Model number: </h3>{{ item.model_code }}<br>
+    <h3>Description: </h3>{{ item.description }}<br>
+    <h3>Shipped in: </h3>{{ item.shipped_in }}<br>
+    <h3>Shipped out: </h3>{{ item.shipped_out }}<br>
+</div>
+</div>
+</center>
+
+{% endblock %}

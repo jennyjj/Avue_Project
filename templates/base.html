@@ -1,0 +1,43 @@
+<html>
+<head>
+  <title>{% block title %}TITLE HERE{% endblock %}</title>
+  <script src="http://code.jquery.com/jquery.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <link rel="stylesheet"
+        href="/static/css/page.css"/>
+  <link rel="stylesheet"W
+        href="https://fonts.googleapis.com/css?family=Bellefair|Ubuntu:700">
+    
+  <div class="navbar navbar-inverse">
+    <div class="container">
+      <div class="navbar-header">
+          <a class="navbar-brand" href="/">Avue Warehouse</a>
+      </div>   
+    </div>
+  </div>
+</head>
+
+<body>
+
+  <!-- Show flashed messages -->
+  {% with messages = get_flashed_messages() %}
+    {% for message in messages %}
+      <div class="alert alert-warning text-center">{{ message }}</div>
+    {% endfor %}
+  {% endwith %}
+
+  <!-- This is where the main content goes. -->
+  <div class="row">
+    <div class="col-xs-12 text-center page-title">
+      <h1>{% block heading %}HEADING FOR PAGE{% endblock %}</h1>
+    </div>
+  </div>
+
+   
+  {% block content %}
+    BODY OF PAGE GOES HERE VIA INHERITANCE
+  {% endblock %} 
+
+</body>
+</html>

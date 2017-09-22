@@ -1,0 +1,8 @@
+.dropdown-item {
+    text-indent: 50px;
+}
+
+.well #wrapper ul, .well #wrapper li {
+    margin: 0; 
+    padding: 0;
+}

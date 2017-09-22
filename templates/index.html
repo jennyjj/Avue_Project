@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Home page{% endblock %}
+{% block heading %}AVUE Warehouse{% endblock %}
+{% block head %}
+<style>
+  body {
+  background-image: url("AVUELOGO");
+  }
+</style>  
+{% endblock %}
+
+{% block content %}
+
+<br><br>
+<center>
+<div class="btn-group">
+  <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Ship in
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="/ship_in_form">  Input information</a>
+  </div>
+</div>
+<div class="btn-group">
+  <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Ship out
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="ship_out_form">  Input information</a>
+  </div>
+</div>
+<div class="btn-group">
+  <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Check status 
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="/form_for_model_number">  See by model number</a>
+    <a class="dropdown-item" href="/form_for_serial_number">  See by serial number</a>
+  </div>
+</div></center>
+
+{% endblock %}
