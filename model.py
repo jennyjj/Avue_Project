@@ -22,7 +22,7 @@ class Item(db.Model):
     model = db.relationship('Model', backref='items')
 
     def __repr__(self):
-        return "<Item item_id=%s model_code=%s serial_number=%s shipped_in=%s shipped_out=%s>" % (self.item_id, self.model_code, self.serial_number, self.shipped_out, self.shipped_in)
+        return "<Item item_id=%s model_code=%s serial_number=%s shipped_in=%s shipped_out=%s customer=%s>" % (self.item_id, self.model_code, self.serial_number, self.shipped_out, self.shipped_in, self.customer)
 
 
 class Model(db.Model):

@@ -77,6 +77,7 @@ def shipped_out():
     shipped_out = "%s/%s/%s" % (time.month, time.day, time.year)
 
     item.shipped_out = shipped_out
+    item.customer = customer
     db.session.commit()
 
     return redirect('/')
@@ -110,6 +111,7 @@ def get_info_by_model_number():
     count_items_received = len(items_received)
 
     items_shipped = db.session.query(Item).filter(Item.model_code==model_code).filter(Item.shipped_out.between(starting_date, ending_date)).all()
+    print items_shipped
 
     count_items_shipped = len(items_shipped)
 
