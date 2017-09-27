@@ -33,7 +33,8 @@ def load_models():
 
     Model.query.delete()
 
-    for row in open("seed_data/u.model"):
+    for row in open("seed_data/u.model3"):
+
         row = row.rstrip()
 
         model_code, description, quantity  = row.split("|")
@@ -44,12 +45,10 @@ def load_models():
 
         db.session.commit()
 
-
     
-
 if __name__ == "__main__":
     connect_to_db(app)
 
     load_items()
     load_models()
-    # load_users()
+
