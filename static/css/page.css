@@ -1,8 +1,28 @@
-.dropdown-item {
-    text-indent: 50px;
+.btn-group  {
+    text-align: center;
 }
 
-.well #wrapper ul, .well #wrapper li {
-    margin: 0; 
-    padding: 0;
+.dropdown-menu {
+    text-align: center;
+}
+
+
+.dropdown-menu {
+    text-align: center;
+}
+
+
+.no-list {
+  list-style-type: none; /* Remove user agent list styling */
+  padding-left: 0; /* Remove user agent padding */
+  margin-top: 0; /* Remove user agent margin */
+  margin-bottom: 0; /* Remove user agent margin */
+}
+
+/*
+ * (>) immediate child of parent selector
+ * https://developer.mozilla.org/en-US/docs/Web/CSS/Child_selectors
+ */
+.no-list > li {
+  padding-bottom: 10px;
 }

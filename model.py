@@ -14,7 +14,7 @@ class Item(db.Model):
     shipped_in = db.Column(db.Date, nullable=False)
     shipped_out = db.Column(db.Date, nullable=True)
     serial_number = db.Column(db.Integer, nullable=False)
-    description = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(300), nullable=False)
     manufacturer = db.Column(db.String(100), nullable=False)
     customer = db.Column(db.String(100), nullable=True)
     img_url = db.Column(db.String(300), nullable=True)
@@ -31,7 +31,7 @@ class Model(db.Model):
     __tablename__ = "models"
 
     model_code = db.Column(db.String(50), primary_key=True, nullable=False)
-    description = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(300), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     
 

@@ -110,14 +110,32 @@ def get_info_by_model_number():
     
     count_items_received = len(items_received)
 
+    dates_shipped_in = {}
+
+    for item in items_received:
+        if item.shipped_in in dates_shipped_in:
+            dates_shipped_in[item.shipped_in] += 1
+        else:
+            dates_shipped_out[item.shipped_in] = 1
+    print dates_shipped_in
+
     items_shipped = db.session.query(Item).filter(Item.model_code==model_code).filter(Item.shipped_out.between(starting_date, ending_date)).all()
-    print items_shipped
 
     count_items_shipped = len(items_shipped)
 
+    dates_shipped_out = {}
+
+    for item in items_shipped:
+        if item.shipped_out in dates_shipped_out:
+            dates_shipped_out[item.shipped_out] += 1
+        else:
+            dates_shipped_out[item.shipped_out] = 1
+    print dates_shipped_out
+
     return render_template("info_for_model_number.html", model=model, model_code=model_code, 
         count_items_received=count_items_received, items_received=items_received, 
-        count_items_shipped=count_items_shipped, items_shipped=items_shipped)
+        dates_shipped_in=dates_shipped_in, count_items_shipped=count_items_shipped, 
+        items_shipped=items_shipped, dates_shipped_out=dates_shipped_out)
 
 @app.route('/form_for_serial_number')
 def see_serial_number():
