@@ -14,13 +14,13 @@
 {% block content %}
 <br><br>
 <center>
-<div class="well spaced" style="width:40%;">
+<div class="well spaced" style="width:80%;">
 <div id="wrapper">
 
   <h4>Details about model {{ model_code }}</h4>
   <h4>Description: {{ model.description }}</h4>
 
-  <table style="width:100%" class="table-striped table-bordered" border="1|1">
+  <table style="width:100%" class="table-striped table-bordered" border="1|1" cellpadding="10">
   <tr>
     <th>Date</th>
     <th>In</th> 
@@ -29,34 +29,40 @@
     <th>Customer</th>
     <th>Manufacturer</th>
   </tr>
-  {% for item in items_received %}
+  {% for date in dates_info %}
   <tr>
-    <td>{{ item.shipped_in }}</td>
-    <td>1</td> 
-    <td></td>
-    <td>{{ item.serial_number }}</td>
-    <td></td>
-    <td>{{ item.manufacturer }}</td>
-  </tr>
-  {% endfor %}
-  {% for item in items_shipped %}
-  <tr>
-    <td>{{ item.shipped_out }}</td>
-    <td></td> 
-    <td>1</td>
-    <td>{{ item.serial_number }}</td>
-    <td>{{ item.customer }}</td>
-    <td></td>
+    <td>{{ date }}</td>
+    <td>{{ dates_info[date][0] }}</td> 
+    <td>{{ dates_info[date][1] }}</td>
+    {% for i in dates_info[date][2:] %}
+     <tr> 
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{{ i[2] }}</td>
+      <td>{{ i[1] }}</td>
+      <td>{{ i[0] }}</td>
+     <tr> 
+    {% endfor %}
   </tr>
   {% endfor %}
   <tr>
     <td>Total</td>
     <td>{{ count_items_received }}</td>
     <td>{{ count_items_shipped }}</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
   <tr>
   <tr>
     <td>Total On Hand</td>
     <td>{{ model.quantity }}
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
 </table>
 
 </div>

@@ -51,6 +51,8 @@ def shipped_in():
     else:
         model = Model(model_code=model_code,
                 quantity=1)
+        db.session.add(model)
+        db.session.commit()
 
     db.session.add(item)
     db.session.commit() 
@@ -80,12 +82,14 @@ def shipped_out():
     item.customer = customer
     db.session.commit()
 
-    return redirect('/')
+    model_code = item.model_code
+    print model_code
+    model = Model.query.filter_by(model_code=model_code).first()
+    print model
+    model.quantity -= 1
+    db.session.commit()
 
-    # model_number = item.model_code
-    # model = Model.query.filter_by(model_code=model_number):
-    # model.quantity -= 1
-    # db.session.commit()
+    return redirect('/')
 
 @app.route('/form_for_model_number')
 def see_model_number():
@@ -114,9 +118,11 @@ def get_info_by_model_number():
 
     for item in items_received:
         if item.shipped_in in dates_shipped_in:
-            dates_shipped_in[item.shipped_in] += 1
+            dates_shipped_in[item.shipped_in][0] += 1
+            dates_shipped_in[item.shipped_in].append([item.manufacturer, "none", item.serial_number])
         else:
-            dates_shipped_out[item.shipped_in] = 1
+            dates_shipped_in[item.shipped_in] = [1]
+            dates_shipped_in[item.shipped_in].append([item.manufacturer, "none", item.serial_number])
     print dates_shipped_in
 
     items_shipped = db.session.query(Item).filter(Item.model_code==model_code).filter(Item.shipped_out.between(starting_date, ending_date)).all()
@@ -127,14 +133,48 @@ def get_info_by_model_number():
 
     for item in items_shipped:
         if item.shipped_out in dates_shipped_out:
-            dates_shipped_out[item.shipped_out] += 1
+            dates_shipped_out[item.shipped_out][0] += 1
+            dates_shipped_out[item.shipped_out].append(["none", item.customer, item.serial_number])
         else:
-            dates_shipped_out[item.shipped_out] = 1
+            dates_shipped_out[item.shipped_out] = [1]
+            dates_shipped_out[item.shipped_out].append(["none", item.customer, item.serial_number])
     print dates_shipped_out
 
-    return render_template("info_for_model_number.html", model=model, model_code=model_code, 
-        count_items_received=count_items_received, items_received=items_received, 
-        dates_shipped_in=dates_shipped_in, count_items_shipped=count_items_shipped, 
+    dates = []
+
+    for date in dates_shipped_in:
+        dates.append(date)
+    for date in dates_shipped_out:
+        dates.append(date)
+
+    dates = set(dates)
+    dates = list(dates)
+    dates = sorted(dates)
+    print dates
+
+    dates_info = {}
+
+    for date in dates:
+        if date in dates_shipped_in and date not in dates_shipped_out:
+            dates_info[date] = [dates_shipped_in[date][0]]
+            dates_info[date].append(0)
+        if date in dates_shipped_in and date in dates_shipped_out:
+            dates_info[date] = [dates_shipped_in[date][0]]
+            dates_info[date].append(dates_shipped_out[date][0])
+        if date in dates_shipped_out and date not in dates_shipped_in:
+            dates_info[date] = [0]
+            dates_info[date].append(dates_shipped_in[date][0])
+        if date in dates_shipped_in:
+            dates_info[date].extend(dates_shipped_in[date][1:])
+        if date in dates_shipped_out:
+            dates_info[date].extend(dates_shipped_out[date][1:])
+    print dates_info
+
+    return render_template("info_for_model_number.html", model=model,  
+        model_code=model_code, dates_info=dates_info,
+        count_items_received=count_items_received, 
+        items_received=items_received, dates_shipped_in=dates_shipped_in, 
+        count_items_shipped=count_items_shipped, 
         items_shipped=items_shipped, dates_shipped_out=dates_shipped_out)
 
 @app.route('/form_for_serial_number')
@@ -164,7 +204,7 @@ if __name__ == "__main__":
     # Use the DebugToolbar
     DebugToolbarExtension(app)
 
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", port=5001)
 
 
 

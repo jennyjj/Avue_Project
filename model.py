@@ -36,7 +36,7 @@ class Model(db.Model):
     
 
     def __repr__(self):
-        return "<Model model_id=%s model_code=%s quantity=%s>" % (self.model_id, self.model_code, self.quantity)
+        return "<Model model_code=%s quantity=%s>" % (self.model_code, self.quantity)
 
 
 def init_app():

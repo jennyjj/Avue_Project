@@ -1,16 +1,15 @@
-.btn-group  {
-    text-align: center;
+body {
+    background-color: #006600;
 }
 
-.dropdown-menu {
-    text-align: center;
-}
+/*.btn .btn-danger .btn-lg .dropdown-toggle {
+    background-color: #42f44b;
+}*/
 
-
-.dropdown-menu {
-    text-align: center;
-}
-
+.dropdown-toggle:active, .open .dropdown-toggle {
+        background:#FFF !important; 
+        color:#000 !important;
+    }
 
 .no-list {
   list-style-type: none; /* Remove user agent list styling */
