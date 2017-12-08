@@ -9,16 +9,32 @@
   <link rel="stylesheet"W
         href="https://fonts.googleapis.com/css?family=Bellefair|Ubuntu:700">
     
-  <div class="navbar navbar-inverse">
-    <div class="container">
-      <div class="navbar-header" class="text-center">
-          <a class="navbar-brand" href="/">Avue Warehouse</a>
-      </div>   
-    </div>
-  </div>
-</head>
+ <br><br>
+  {% if "user_id" in session %}
+      <div class="navbar navbar-inverse">
+        <div class="container">
+          <div class="navbar-header">
+              <a class="navbar-brand" href="/">Artsy Trips</a>
+          </div>
+          <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+                  <li><a href="/buttons">Navigate warehouse</a></li>
+                  <li><a href="/logout">Logout</a></li>
+              </ul>
+          </div>
+        </div>
+      </div>
+  {% else %}
+      <div class="navbar navbar-inverse style='background-color: #e3f2fd;'">
+        <div class="container">
+          <div class="navbar-header">
+              <a class="navbar-brand" href="/">Artsy Trips</a>
+          </div>
+        </div>
+      </div>
 
-<body>
+      
+  {% endif %}
 
   <!-- Show flashed messages -->
   {% with messages = get_flashed_messages() %}
@@ -33,6 +49,14 @@
       <h1>{% block heading %}HEADING FOR PAGE{% endblock %}</h1>
     </div>
   </div>
+
+    <!-- Show flashed messages -->
+  {% with messages = get_flashed_messages() %}
+    {% for message in messages %}
+      <div class="alert alert-warning text-center">{{ message }}</div>
+    {% endfor %}
+  {% endwith %}
+
 
    
   {% block content %}
