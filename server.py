@@ -67,7 +67,7 @@ def login():
     session["user_id"] = user.user_id
 
     flash("Logged in")
-    return redirect("/users/%s" % user.user_id)
+    return redirect("/buttons")
 
 @app.route('/logout')
 def logout():
