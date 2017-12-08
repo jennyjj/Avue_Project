@@ -28,7 +28,7 @@ def register():
     name = request.form['name']
     email = request.form['email']
     password = request.form['password']
-    password_hashed = bcrypt.hashpw(password.encode('utf-8'), bycrypt.gensalt())
+    password_hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
     if User.query.filter_by(email=email).first():
         flash("User %s already exists." % email)
