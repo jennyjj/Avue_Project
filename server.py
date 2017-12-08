@@ -21,7 +21,7 @@ def go_home():
 
     return render_template("index.html")
 
-@app.route('/register')
+@app.route('/register', methods=['POST'])
 def register():
     """Process registration."""
 
@@ -44,7 +44,7 @@ def register():
     flash("User %s added." % email)
     return redirect("/buttons")
 
-@app.route('/login')
+@app.route('/login', methods=['POST'])
 def login():
     """Logs in user.  Checks if they are in system and if password right."""
 
