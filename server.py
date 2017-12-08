@@ -24,7 +24,6 @@ def go_home():
 @app.route('/register')
 def register():
        """Process registration."""
-
     # Get form variables
     name = request.form["name"]
     email = request.form["email"]
