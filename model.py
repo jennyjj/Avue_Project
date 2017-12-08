@@ -4,8 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-class User(db.model):
-    """Users using Avue Warehouse"""
+class User(db.Model):
+    """Users using Avue Warehouse."""
 
     __tablename__ = "users"
 
