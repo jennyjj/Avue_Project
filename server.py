@@ -42,7 +42,40 @@ def register():
 
     session["user_id"] = new_user.user_id
 
+    flash("User %s added." % email)
     return redirect("/buttons")
+
+@app.route('/login')
+def login():
+    """Logs in user.  Checks if they are in system and if password right."""
+
+     # Get form variables
+    email = request.form["email"]
+    password = request.form["password"]
+    password_hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user:
+        flash("No such user")
+        return redirect("/")
+
+    if (bcrypt.checkpw(password.encode('utf-8'), password_hashed)) == False:
+        flash("Incorrect password")
+        return redirect("/")
+
+    session["user_id"] = user.user_id
+
+    flash("Logged in")
+    return redirect("/users/%s" % user.user_id)
+
+@app.route('/logout')
+def logout():
+    """Log out."""
+    if session.has_key('user_id'):
+        del session['user_id']
+        flash("Logged Out.")
+    return redirect("/")
 
 @app.route('/buttons')
 def go_to_buttons():
