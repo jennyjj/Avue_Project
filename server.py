@@ -23,12 +23,12 @@ def go_home():
 
 @app.route('/register')
 def register():
-       """Process registration."""
-    # Get form variables
-    name = request.form["name"]
-    email = request.form["email"]
-    password = request.form["password"]
-    password_hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    """Process registration."""
+
+    name = request.form['name']
+    email = request.form['email']
+    password = request.form['password']
+    password_hashed = bcrypt.hashpw(password.encode('utf-8'), bycrypt.gensalt())
 
     if User.query.filter_by(email=email).first():
         flash("User %s already exists." % email)
