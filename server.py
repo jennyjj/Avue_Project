@@ -3,8 +3,9 @@ from flask_debugtoolbar import DebugToolbarExtension
 from jinja2 import StrictUndefined
 from datetime import date, datetime
 import pytz
+import bcrypt
 
-from model import Item, Model, connect_to_db, db
+from model import User, Item, Model, connect_to_db, db
 
 app = Flask(__name__)
 app.jinja_env.undefined = StrictUndefined
@@ -15,9 +16,39 @@ app.secret_key = "ABC"
 
 @app.route('/')
 def go_home():
-    """Goes to the homepage.  Homepage has search box for product's location."""
+    """Goes to the homepage.  Homepage has login box.  If the user is logged in,
+     it shows nothing"""
 
     return render_template("index.html")
+
+@app.route('/register')
+def register():
+       """Process registration."""
+
+    # Get form variables
+    name = request.form["name"]
+    email = request.form["email"]
+    password = request.form["password"]
+    password_hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+    if User.query.filter_by(email=email).first():
+        flash("User %s already exists." % email)
+        return redirect("/")
+
+    new_user = User(name=name, email=email, password=password_hashed)
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    session["user_id"] = new_user.user_id
+
+    return redirect("/buttons")
+
+@app.route('/buttons')
+def go_to_buttons():
+    """Gives choices for exploring inventory."""
+
+    return render_template("buttons.html")
 
 @app.route('/ship_in_form')
 def go_shipped_in_form():
