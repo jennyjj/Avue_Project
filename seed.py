@@ -48,6 +48,10 @@ def load_users():
 
         user = User(user_name=user_name, email=email, password=password_hashed)
 
+        db.session.add(user)
+
+        db.session.commit()
+
 
 if __name__ == "__main__":
     connect_to_db(app)
