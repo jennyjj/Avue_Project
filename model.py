@@ -1,7 +1,7 @@
 """Models and database functions for avuewarehouse db."""
 
 from flask_sqlalchemy import SQLAlchemy
-from flask.ext.security import current_user, login_required, RoleMixin, Security, \
+from flask_security import current_user, login_required, RoleMixin, Security, \
     SQLAlchemyUserDatastore, UserMixin, utils
 from flask.ext.admin import Admin
 
