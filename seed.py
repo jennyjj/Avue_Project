@@ -1,8 +1,8 @@
 """Utility file to seed avuewarehouse database"""
 
-from model import Item, Model, connect_to_db, db
+from model import User, Item, Model, connect_to_db, db
 from server import app
-
+import bcrypt
 
 def load_items():
     """Load items into database."""
@@ -10,20 +10,6 @@ def load_items():
     print "Items"
 
     Item.query.delete()
-
-    # for row in open("seed_data/u.item"):
-    #     row = row.rstrip()
-
-    #     genre_id, genre_code, genre_name, artist, img_url = row.split("|")
-
-    #     genre = Genre(genre_code=genre_code,
-    #                     genre_name=genre_name,
-    #                     artist=artist,
-    #                     img_url=img_url)
-
-    #     db.session.add(genre)
-
-    #     db.session.commit()
 
 
 def load_models():
@@ -45,10 +31,28 @@ def load_models():
 
         db.session.commit()
 
-    
+def load_users():
+    """Load users into database."""
+
+    print "Users"
+
+    User.query.delete()
+
+    for row in open("seed_data/u.users"):
+
+        row = row.rstrip()
+
+        user_name, email, password = row.split("|")
+
+        password_hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+        user = User(user_name=user_name, email=email, password=password_hashed)
+
+
 if __name__ == "__main__":
     connect_to_db(app)
 
     load_items()
     load_models()
+    load_users()
 
