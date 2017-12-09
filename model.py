@@ -3,7 +3,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import current_user, login_required, RoleMixin, Security, \
     SQLAlchemyUserDatastore, UserMixin, utils
-from flask.ext.admin import Admin
 
 db = SQLAlchemy()
 
@@ -105,13 +104,6 @@ def connect_to_db(app, db_uri='postgres:///avuewarehouse'):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     db.app = app
     db.init_app(app)
-
-# Initialize Flask-Admin
-admin = Admin(app)
-
-# Add Flask-Admin views for Users and Roles
-admin.add_view(UserAdmin(User, db.session))
-admin.add_view(RoleAdmin(Role, db.session))
 
 if __name__ == "__main__":
     # As a convenience, if we run this module interactively, it will leave
