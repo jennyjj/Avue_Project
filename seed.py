@@ -42,15 +42,34 @@ def load_users():
 
         row = row.rstrip()
 
-        user_name, email, password = row.split("|")
+        user_name, password, role = row.split("|")
 
         password_hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
-        user = User(user_name=user_name, email=email, password=password_hashed)
+        user = User(user_name=user_name, password=password_hashed)
+
+        role = Role(name=role)
+
+        user.roles = [role,]
 
         db.session.add(user)
 
         db.session.commit()
+
+def load_roles():
+    """Load roles into database."""
+
+    print "Roles"
+
+    Role.query.delete()
+
+    admin_role = Role(name="Admin")
+    db.session.add(admin_role)
+    db.session.commit()
+
+    demoltd_role = Role(name="Demoltd")
+    db.session.add(demoltd_role)
+    db.session.commit()
 
 
 if __name__ == "__main__":
