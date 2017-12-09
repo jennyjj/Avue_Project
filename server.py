@@ -21,39 +21,17 @@ def go_home():
 
     return render_template("index.html")
 
-@app.route('/register', methods=['POST'])
-def register():
-    """Process registration."""
-
-    name = request.form['name']
-    email = request.form['email']
-    password = request.form['password']
-    password_hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-
-    if User.query.filter_by(email=email).first():
-        flash("User %s already exists." % email)
-        return redirect("/")
-
-    new_user = User(name=name, email=email, password=password_hashed)
-
-    db.session.add(new_user)
-    db.session.commit()
-
-    session["user_id"] = new_user.user_id
-
-    flash("User %s added." % email)
-    return redirect("/buttons")
 
 @app.route('/login', methods=['POST'])
 def login():
     """Logs in user.  Checks if they are in system and if password right."""
 
      # Get form variables
-    email = request.form["email"]
+    user_name = request.form["user_name"]
     password = request.form["password"]
     password_hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
-    user = User.query.filter_by(email=email).first()
+    user = User.query.filter_by(user_name=user_name).first()
 
     if not user:
         flash("No such user")
