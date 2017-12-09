@@ -1,6 +1,6 @@
 """Utility file to seed avuewarehouse database"""
 
-from model import User, Item, Model, connect_to_db, db
+from model import User, Item, Model, Role, UserRoles, connect_to_db, db
 from server import app
 import bcrypt
 
