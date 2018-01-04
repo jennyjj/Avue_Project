@@ -48,11 +48,7 @@ def load_users():
 
         user = User(user_name=user_name, password=password_hashed)
 
-        role = Role(name=role)
-
         user.roles = [role,]
-
-        db.session.add(user)
 
         db.session.commit()
 
@@ -78,4 +74,5 @@ if __name__ == "__main__":
     load_items()
     load_models()
     load_users()
+    load_roles()
 
