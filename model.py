@@ -17,38 +17,27 @@ class User(db.Model, UserMixin):
 
     roles = db.relationship(
         'Role',
-        secondary='roles_users',
-        backref=db.backref('users', lazy='dynamic')
-    )
+        secondary='roles_users')
 
     def __repr__(self):
         return "<User id=%s user_name=%s email=%s>" % (self.user_id, self.user_name, self.email)
 
-class Role(db.Model, RoleMixin):
+class Role(db.Model):
     """Roles users can have."""
 
     __tablename__ = "roles"
 
     # Our Role has three fields, ID, name and description
-    id = db.Column(db.Integer(), primary_key=True, autoincrement=True, nullable=False)
+    role_id = db.Column(db.Integer(), primary_key=True, autoincrement=True, nullable=False)
     name = db.Column(db.String(80), unique=True)
-
-    # __str__ is required by Flask-Admin, so we can have human-readable values for the Role when editing a User.
-    # If we were using Python 2.7, this would be __unicode__ instead.
-    def __unicode__(self):
-        return self.name
-
-    # __hash__ is required to avoid the exception TypeError: unhashable type: 'Role' when saving a User
-    def __hash__(self):
-        return hash(self.name)
 
 # Define the UserRoles association table
 class UserRoles(db.Model):
-    __tablename__ = 'roles_users'
+    __tablename__ = 'user_roles'
 
-    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    userrole_id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer(), db.ForeignKey('users.user_id', ondelete='CASCADE'))
-    role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
+    role_id = db.Column(db.Integer(), db.ForeignKey('roles.role_id', ondelete='CASCADE'))
 
 
 class Item(db.Model):
