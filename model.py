@@ -17,7 +17,7 @@ class User(db.Model, UserMixin):
 
     roles = db.relationship(
         'Role',
-        secondary='roles_users')
+        secondary='user_roles')
 
     def __repr__(self):
         return "<User id=%s user_name=%s email=%s>" % (self.user_id, self.user_name, self.email)
