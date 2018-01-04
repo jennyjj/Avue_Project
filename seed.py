@@ -48,6 +48,8 @@ def load_users():
 
         user = User(user_name=user_name, password=password_hashed)
 
+        role = Role(name=role)
+
         user.roles = [role,]
 
         db.session.commit()
