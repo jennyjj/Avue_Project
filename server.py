@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, flash, redirect, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
+from flask_user import roles_required
 from flask_security import current_user, login_required, RoleMixin, Security, \
     SQLAlchemyUserDatastore, UserMixin, utils, roles_required
 from jinja2 import StrictUndefined
