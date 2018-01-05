@@ -132,7 +132,6 @@ class Identity(object):
             self.__class__.__name__, self.id, self.auth_type, self.provides
         )
 
-
 class AnonymousIdentity(Identity):
     """An anonymous identity"""
 
@@ -332,7 +331,6 @@ def session_identity_saver(identity):
     session['identity.id'] = identity.id
     session['identity.auth_type'] = identity.auth_type
     session.modified = True
-
 
 class Principal(object):
     """Principal extension
