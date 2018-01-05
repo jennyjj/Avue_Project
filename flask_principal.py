@@ -130,6 +130,209 @@ class Identity(object):
     def __repr__(self):
         return '<{0} id="{1}" auth_type="{2}" provides={3}>'.format(
             self.__class__.__name__, self.id, self.auth_type, self.provides
+        )
+
+
+class AnonymousIdentity(Identity):
+    """An anonymous identity"""
+
+    def __init__(self):
+        Identity.__init__(self, None)
+
+
+class IdentityContext(object):
+    """The context of an identity for a permission.
+    .. note:: The principal is usually created by the flaskext.Permission.require method
+              call for normal use-cases.
+    The principal behaves as either a context manager or a decorator. The
+    permission is checked for provision in the identity, and if available the
+    flow is continued (context manager) or the function is executed (decorator).
+    """
+
+    def __init__(self, permission, http_exception=None):
+        self.permission = permission
+        self.http_exception = http_exception
+        """The permission of this principal
+        """
+
+    @property
+    def identity(self):
+        """The identity of this principal
+        """
+        return g.identity
+
+    def can(self):
+        """Whether the identity has access to the permission
+        """
+        return self.identity.can(self.permission)
+
+    def __call__(self, f):
+        @wraps(f)
+        def _decorated(*args, **kw):
+            with self:
+                rv = f(*args, **kw)
+            return rv
+        return _decorated
+
+    def __enter__(self):
+        # check the permission here
+        if not self.can():
+            if self.http_exception:
+                abort(self.http_exception, self.permission)
+            raise PermissionDenied(self.permission)
+
+    def __exit__(self, *args):
+        return False
+
+
+class Permission(object):
+    """Represents needs, any of which must be present to access a resource
+    :param needs: The needs for this permission
+    """
+    def __init__(self, *needs):
+        """A set of needs, any of which must be present in an identity to have
+        access.
+        """
+
+        self.needs = set(needs)
+        self.excludes = set()
+
+    def _bool(self):
+        return bool(self.can())
+
+    def __nonzero__(self):
+        """Equivalent to ``self.can()``.
+        """
+        return self._bool()
+
+    def __bool__(self):
+        """Equivalent to ``self.can()``.
+        """
+        return self._bool()
+
+    def __and__(self, other):
+        """Does the same thing as ``self.union(other)``
+        """
+        return self.union(other)
+
+    def __or__(self, other):
+        """Does the same thing as ``self.difference(other)``
+        """
+        return self.difference(other)
+
+    def __contains__(self, other):
+        """Does the same thing as ``other.issubset(self)``.
+        """
+        return other.issubset(self)
+
+    def __repr__(self):
+        return '<{0} needs={1} excludes={2}>'.format(
+            self.__class__.__name__, self.needs, self.excludes
+        )
+
+    def require(self, http_exception=None):
+        """Create a principal for this permission.
+        The principal may be used as a context manager, or a decroator.
+        If ``http_exception`` is passed then ``abort()`` will be called
+        with the HTTP exception code. Otherwise a ``PermissionDenied``
+        exception will be raised if the identity does not meet the
+        requirements.
+        :param http_exception: the HTTP exception code (403, 401 etc)
+        """
+        return IdentityContext(self, http_exception)
+
+    def test(self, http_exception=None):
+        """
+        Checks if permission available and raises relevant exception
+        if not. This is useful if you just want to check permission
+        without wrapping everything in a require() block.
+        This is equivalent to::
+            with permission.require():
+                pass
+        """
+
+        with self.require(http_exception):
+            pass
+
+    def reverse(self):
+        """
+        Returns reverse of current state (needs->excludes, excludes->needs)
+        """
+
+        p = Permission()
+        p.needs.update(self.excludes)
+        p.excludes.update(self.needs)
+        return p
+
+    def union(self, other):
+        """Create a new permission with the requirements of the union of this
+        and other.
+        :param other: The other permission
+        """
+        p = Permission(*self.needs.union(other.needs))
+        p.excludes.update(self.excludes.union(other.excludes))
+        return p
+
+    def difference(self, other):
+        """Create a new permission consisting of requirements in this
+        permission and not in the other.
+        """
+
+        p = Permission(*self.needs.difference(other.needs))
+        p.excludes.update(self.excludes.difference(other.excludes))
+        return p
+
+    def issubset(self, other):
+        """Whether this permission needs are a subset of another
+        :param other: The other permission
+        """
+        return (
+            self.needs.issubset(other.needs) and
+            self.excludes.issubset(other.excludes)
+        )
+
+    def allows(self, identity):
+        """Whether the identity can access this permission.
+        :param identity: The identity
+        """
+        if self.needs and not self.needs.intersection(identity.provides):
+            return False
+
+        if self.excludes and self.excludes.intersection(identity.provides):
+            return False
+
+        return True
+
+    def can(self):
+        """Whether the required context for this permission has access
+        This creates an identity context and tests whether it can access this
+        permission
+        """
+        return self.require().can()
+
+
+class Denial(Permission):
+    """
+    Shortcut class for passing excluded needs.
+    """
+
+    def __init__(self, *excludes):
+        self.excludes = set(excludes)
+        self.needs = set()
+
+
+def session_identity_loader():
+    if 'identity.id' in session and 'identity.auth_type' in session:
+        identity = Identity(session['identity.id'],
+                            session['identity.auth_type'])
+        return identity
+
+
+def session_identity_saver(identity):
+    session['identity.id'] = identity.id
+    session['identity.auth_type'] = identity.auth_type
+    session.modified = True
+
 
 class Principal(object):
     """Principal extension
