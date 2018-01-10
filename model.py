@@ -15,29 +15,29 @@ class User(db.Model, UserMixin):
     user_name = db.Column(db.String(40), nullable=False)
     password = db.Column(db.String(100), nullable=False)
 
-    roles = db.relationship(
-        'Role',
-        secondary='user_roles')
+    # roles = db.relationship(
+    #     'Role',
+    #     secondary='user_roles')
 
     def __repr__(self):
         return "<User id=%s user_name=%s email=%s>" % (self.user_id, self.user_name, self.email)
 
-class Role(db.Model):
-    """Roles users can have."""
+# class Role(db.Model):
+#     """Roles users can have."""
 
-    __tablename__ = "roles"
+#     __tablename__ = "roles"
 
-    # Our Role has three fields, ID, name and description
-    role_id = db.Column(db.Integer(), primary_key=True, autoincrement=True, nullable=False)
-    name = db.Column(db.String(80), unique=True)
+#     # Our Role has three fields, ID, name and description
+#     role_id = db.Column(db.Integer(), primary_key=True, autoincrement=True, nullable=False)
+#     name = db.Column(db.String(80), unique=True)
 
-# Define the UserRoles association table
-class UserRoles(db.Model):
-    __tablename__ = 'user_roles'
+# # Define the UserRoles association table
+# class UserRoles(db.Model):
+#     __tablename__ = 'user_roles'
 
-    userrole_id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer(), db.ForeignKey('users.user_id', ondelete='CASCADE'))
-    role_id = db.Column(db.Integer(), db.ForeignKey('roles.role_id', ondelete='CASCADE'))
+#     userrole_id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+#     user_id = db.Column(db.Integer(), db.ForeignKey('users.user_id', ondelete='CASCADE'))
+#     role_id = db.Column(db.Integer(), db.ForeignKey('roles.role_id', ondelete='CASCADE'))
 
 
 class Item(db.Model):
