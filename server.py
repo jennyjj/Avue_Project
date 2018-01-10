@@ -64,7 +64,7 @@ def go_to_buttons():
     return render_template("buttons.html")
 
 @app.route('/ship_in_form')
-@roles_required('Admin')
+# @roles_required('Admin')
 def go_shipped_in_form():
 
     """Gives form to fill out upon shipping in item(s)."""
@@ -72,7 +72,7 @@ def go_shipped_in_form():
     return render_template("ship_in.html")
 
 @app.route('/ship_in', methods=["POST"])
-@roles_required('Admin')
+# @roles_required('Admin')
 def shipped_in():
     """Receiving item and inputting information associated with item."""
 
@@ -107,14 +107,14 @@ def shipped_in():
     return redirect("/")
 
 @app.route('/ship_out_form')
-@roles_required('Admin,)
+# @roles_required('Admin,)
 def go_shipped_out_form():
     """Gives form to fill out upon shipping out item(s)."""
 
     return render_template("ship_out.html")
 
 @app.route('/ship_out', methods=["POST"])
-@roles_required('Admin')
+# @roles_required('Admin')
 def shipped_out():
     """Shipping out an item and inputting information about customer."""
 
@@ -141,14 +141,14 @@ def shipped_out():
     return redirect('/')
 
 @app.route('/form_for_model_number')
-@roles_required('Admin')
+# @roles_required('Admin')
 def see_model_number():
     """Get model number in order to give information."""
 
     return render_template("form_for_model_number.html")
 
 @app.route('/info_for_model_number', methods=["POST"])
-@roles_required('Admin')
+# @roles_required('Admin')
 def get_info_by_model_number():
     """Get information by model number for given timeframe."""
 
@@ -229,14 +229,14 @@ def get_info_by_model_number():
         items_shipped=items_shipped, dates_shipped_out=dates_shipped_out)
 
 @app.route('/form_for_serial_number')
-@roles_required('Admin')
+# @roles_required('Admin')
 def see_serial_number():
     """Get serial number in order to give information."""
 
     return render_template("form_for_serial_number.html")
 
 @app.route('/info_for_serial_number', methods=["POST"])
-@roles_required('Admin')
+# @roles_required('Admin')
 def get_info_by_serial_number():
     """Give information for item with a serial number."""
 
