@@ -48,26 +48,28 @@ def load_users():
 
         user = User(user_name=user_name, password=password_hashed)
 
-        role = Role(name=role)
+        # role = Role(name=role)
 
-        user.roles = [role,]
+        # user.roles = [role,]
+
+        db.session.add(user)
 
         db.session.commit()
 
-def load_roles():
-    """Load roles into database."""
+# def load_roles():
+#     """Load roles into database."""
 
-    print "Roles"
+#     print "Roles"
 
-    Role.query.delete()
+#     Role.query.delete()
 
-    admin_role = Role(name="Admin")
-    db.session.add(admin_role)
-    db.session.commit()
+#     admin_role = Role(name="Admin")
+#     db.session.add(admin_role)
+#     db.session.commit()
 
-    demoltd_role = Role(name="Demoltd")
-    db.session.add(demoltd_role)
-    db.session.commit()
+#     demoltd_role = Role(name="Demoltd")
+#     db.session.add(demoltd_role)
+#     db.session.commit()
 
 
 if __name__ == "__main__":
@@ -76,5 +78,5 @@ if __name__ == "__main__":
     load_items()
     load_models()
     load_users()
-    load_roles()
+    # load_roles()
 

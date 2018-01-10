@@ -64,7 +64,7 @@ def go_to_buttons():
     return render_template("buttons.html")
 
 @app.route('/ship_in_form')
-@roles_required('Admin',)
+@roles_required('Admin')
 def go_shipped_in_form():
 
     """Gives form to fill out upon shipping in item(s)."""
@@ -72,7 +72,7 @@ def go_shipped_in_form():
     return render_template("ship_in.html")
 
 @app.route('/ship_in', methods=["POST"])
-@roles_required('Admin',)
+@roles_required('Admin')
 def shipped_in():
     """Receiving item and inputting information associated with item."""
 
@@ -107,7 +107,7 @@ def shipped_in():
     return redirect("/")
 
 @app.route('/ship_out_form')
-@roles_required('Admin',)
+@roles_required('Admin,)
 def go_shipped_out_form():
     """Gives form to fill out upon shipping out item(s)."""
 
