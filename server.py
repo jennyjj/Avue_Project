@@ -87,7 +87,7 @@ def logout():
     if session.has_key('user_id'):
         del session['user_id']
         flash("Logged Out.")
-    return redirect("/")
+        return redirect("/")
 
 @app.route('/buttons')
 def go_to_buttons():
@@ -125,8 +125,9 @@ def shipped_in():
     
     model = Model.query.filter_by(model_code=model_code).first()
     if not model:
+        flash("no such model")
+        return redirect ("/ship_in")
         
-
     if model:
         model.quantity += 1
     else:
@@ -156,6 +157,9 @@ def shipped_out():
     customer = request.form.get("customer")
 
     item = Item.query.filter_by(serial_number=serial_number).first()
+    if not item:
+        flash("no such item")
+        return redirect("/ship_out")
 
     pacific = pytz.timezone('US/Pacific')
     time = datetime.now(tz=pacific)
@@ -168,6 +172,11 @@ def shipped_out():
     model_code = item.model_code
     print model_code
     model = Model.query.filter_by(model_code=model_code).first()
+    
+    if not model:
+        flash("no model for item")
+        return redirect("/shipt_out")
+    
     print model
     model.quantity -= 1
     db.session.commit()
@@ -194,6 +203,9 @@ def get_info_by_model_number():
     # ending_date = datetime.strptime(ending_date, "%Y-%m-%d")
 
     model = Model.query.filter_by(model_code=model_code).first()
+    if not model:
+            flash("no such model")
+            return redirect("/info_for_model_number")
 
     items_received = db.session.query(Item).filter(Item.model_code==model_code).filter(Item.shipped_in.between(starting_date, ending_date)).all()
     
@@ -278,6 +290,10 @@ def get_info_by_serial_number():
 
     item = Item.query.filter_by(serial_number=serial_number).first()
     print item
+    
+    if not item:
+        flash("no such item")
+        return redirect("/form_for_serial_number")
 
     return render_template("info_for_serial_number.html", item=item)
 
