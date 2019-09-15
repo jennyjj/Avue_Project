@@ -123,9 +123,9 @@ def shipped_in():
                 model_code=model_code,
                 manufacturer=manufacturer)  
     
-    if not Model.query.filter_by(model_code=model_code).first()
-
     model = Model.query.filter_by(model_code=model_code).first()
+    if not model:
+        
 
     if model:
         model.quantity += 1
