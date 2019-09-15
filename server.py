@@ -24,6 +24,37 @@ def go_home():
 
     return render_template("index.html")
 
+@app.route('/register', methods=['POST'])
+def register_process():
+    """Process registration."""
+
+    # Get form variables
+    name = request.form["name"]
+    email = request.form["email"]
+    password = request.form["password"]
+    password_hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+    if User.query.filter_by(email=email).first():
+        flash("User %s already exists." % email)
+        return redirect("/")
+
+    new_user = User(name=name, email=email, password=password_hashed)
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    session["user_id"] = new_user.user_id
+
+    flash("User %s added." % email)
+    return redirect("/users/%s" % new_user.user_id)
+
+
+@app.route('/login')
+def login_form():
+    """Show login form."""
+
+    return render_template("login_form.html")
+
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -35,12 +66,13 @@ def login():
     password_hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
     user = User.query.filter_by(user_name=user_name).first()
+    password_to_check = user.password
 
     if not user:
         flash("No such user")
         return redirect("/")
 
-    if (bcrypt.checkpw(password.encode('utf-8'), password_hashed)) == False:
+    if (bcrypt.checkpw(password_to_check, password_hashed)) == False:
         flash("Incorrect password")
         return redirect("/")
 
@@ -90,6 +122,8 @@ def shipped_in():
                 description=description,
                 model_code=model_code,
                 manufacturer=manufacturer)  
+    
+    if not Model.query.filter_by(model_code=model_code).first()
 
     model = Model.query.filter_by(model_code=model_code).first()
 
